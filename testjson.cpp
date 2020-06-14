@@ -247,6 +247,7 @@ namespace details
     std::basic_string<Ch> result;
     typename std::basic_string<Ch>::const_iterator b = s.begin();
     typename std::basic_string<Ch>::const_iterator e = s.end();
+    auto beg = b;
     while (b != e)
     {
       typedef typename boost::make_unsigned<Ch>::type UCh;
@@ -269,7 +270,10 @@ namespace details
         result += Ch('\\'), result += Ch('t');
       else if (*b == Ch('/'))
         result += Ch('\\'), result += Ch('/');
-      // else if (*b == Ch('"'))  result += Ch('\\'), result += Ch('"');
+      else if (*b == Ch('"') && b != beg && std::next(b) != e)
+      {
+        result += Ch('\\'), result += Ch('"');
+      }
       else if (*b == Ch('"'))
         result += Ch('"');
       else if (*b == Ch('\\'))
